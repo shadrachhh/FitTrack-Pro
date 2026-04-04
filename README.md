@@ -215,7 +215,7 @@ Use the following accounts to test the application.
 ## Database Export Note
 
 - The SQL database export should be included in the project root before final submission.
-- Add the exported `.sql` file alongside this `README.md` when the export is ready.
+- The exported database file is included in the project root as `fittrack.sql`.
 
 ## Project Structure
 
@@ -240,6 +240,7 @@ Fittrack-pro/
 |   |-- apache.conf
 |   `-- Dockerfile
 |-- docker-compose.yml
+|-- fittrack.sql
 `-- README.md
 ```
 
@@ -355,18 +356,30 @@ This means:
 
 The Vue SPA is included to support the rubric requirements around frontend components, routing, and state management.
 
+The SPA does not need a separate top-level `frontend/` folder for this assignment because it is served directly from the PHP application under `backend/public/spa`. This keeps the project simple while still demonstrating:
+
+- Vue components
+- frontend routing
+- shared frontend state
+- API integration with JWT authentication
+
 ### Included SPA Views
 
 - Login view
 - Dashboard view
 - Exercises view
 - Workouts view
+- Workout create view
 
 ### Frontend Features
 
 - Vue Router for navigation
 - shared reactive store for token, user, exercises, and workouts
 - API integration with JWT
+- SPA workout creation connected to the backend API
+- protected SPA routes with login redirects
+- SPA dashboard metrics for workouts, entries, and volume
+- exercise search inside the SPA
 - Bootstrap styling
 
 ## Styling and UI
@@ -380,6 +393,19 @@ UI improvements included:
 - responsive layout
 - clearer spacing and alignment
 - role-aware labels such as `Manage Exercises`
+- improved SPA login and register screens
+- improved SPA workout summaries and filters
+- stronger SPA presentation for demo and grading
+
+## Recent Corrections
+
+The following corrections were made while finalizing the project:
+
+- fixed SPA authentication so API requests can use JWT tokens properly
+- added backend fallback handling for the `Authorization` header in Apache/PHP
+- completed the SPA workout creation flow
+- completed SPA login, register, dashboard, exercises, and workout history flow
+- updated the README to reflect the final project structure and final feature set
 
 ## Manual Testing Guide
 
@@ -435,7 +461,7 @@ Open:
 
 `http://localhost:8000/workouts`
 
- workouts are shown clearly and grouped correctly.
+Confirm that workouts are shown clearly and grouped correctly.
 
 ### 7. Test workout filters
 
@@ -450,7 +476,7 @@ Open:
 
 `http://localhost:8000/dashboard`
 
- it shows:
+Confirm that it shows:
 
 - total workouts
 - recent workouts
@@ -462,12 +488,56 @@ Open:
 
 `http://localhost:8000/spa`
 
+Check that:
+
 - login works through the API
 - dashboard loads
 - exercises load
 - workouts load
+- workout creation works after login
 - router navigation works
 
+## Recommended Demo Flow
+
+If you need to demonstrate the project during review or submission, this is a good order:
+
+1. Show the login and register pages
+2. Log in as a normal user and show the dashboard
+3. Show workout creation and workout history
+4. Show filtering by date and exercise
+5. Log in as an admin and show exercise management
+6. Open the Vue SPA and demonstrate login, routing, and API-backed views
+7. Briefly explain the MVC flow and the API flow
+
+## Submission Checklist
+
+Before submitting, make sure the following are true:
+
+- Docker containers start correctly with `docker compose up --build`
+- the `users` table contains a `role` column
+- at least one admin user exists for demonstrating exercise management
+- the PHP MVC interface works at `http://localhost:8000`
+- the Vue SPA works at `http://localhost:8000/spa`
+- login, register, logout, workouts, and exercise management all function
+- API routes respond with JSON
+- the SQL export file is included in the project root beside `README.md`
+- the README is included in the project root
+- you can explain the code structure in your own words
+
+## Screenshots
+
+You can add screenshots here before final submission.
+
+Suggested screenshots:
+
+- Login page
+- Register page
+- Dashboard
+- Exercise list
+- Exercise edit page
+- Workout create page
+- Workout history page
+- Vue SPA dashboard
 ## Rubric-Relevant Summary
 
 This project includes the key elements needed for rubric categories:
@@ -482,6 +552,20 @@ This project includes the key elements needed for rubric categories:
 - role-based authorization in the backend
 - MVC, routing, namespaces, and autoloading in the backend
 
+## Notes for Submission
+
+This project is intentionally simple, readable, and explainable. It does not try to over-engineer the assignment. The main focus is on meeting the course requirements with a clean structure and working functionality.
+
+Strong points of the submission:
+
+- clear use case
+- clean MVC backend
+- repository and service separation
+- role-based access control
+- Vue frontend with multiple views
+- JSON API with JWT
+- Docker-based setup
+- Bootstrap styling
 ## Author
 
 Terkuma Uker

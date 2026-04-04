@@ -38,6 +38,36 @@ spl_autoload_register(function (string $class): void {
 
 Session::start();
 
+/**
+ * Apache/PHP setups do not always populate HTTP_AUTHORIZATION.
+ * Check common fallbacks so SPA bearer tokens work consistently.
+ */
+function getAuthorizationHeaderValue(): string
+{
+    $serverCandidates = [
+        $_SERVER['HTTP_AUTHORIZATION'] ?? '',
+        $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '',
+    ];
+
+    foreach ($serverCandidates as $candidate) {
+        if (is_string($candidate) && trim($candidate) !== '') {
+            return trim($candidate);
+        }
+    }
+
+    if (function_exists('apache_request_headers')) {
+        $headers = apache_request_headers();
+
+        foreach ($headers as $name => $value) {
+            if (strtolower((string) $name) === 'authorization' && is_string($value) && trim($value) !== '') {
+                return trim($value);
+            }
+        }
+    }
+
+    return '';
+}
+
 $authController = new AuthController(
     new UserService(
         new UserRepository()
@@ -65,7 +95,7 @@ try {
     if (str_starts_with($path, '/api/')) {
         $input = json_decode(file_get_contents('php://input') ?: '[]', true);
         $input = is_array($input) ? $input : [];
-        $authorizationHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+        $authorizationHeader = getAuthorizationHeaderValue();
         $bearerToken = str_starts_with($authorizationHeader, 'Bearer ')
             ? substr($authorizationHeader, 7)
             : '';
