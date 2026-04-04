@@ -194,6 +194,29 @@ CREATE TABLE workout_entries (
 - MySQL username: `root`
 - MySQL password: `root`
 
+## Demo Login Accounts
+
+Use the following accounts to test the application.
+
+### Admin Account
+
+- Name: `Terkuma Uker`
+- Email: `terkumauker50@gmail.com`
+- Password: `08060636202`
+- Role: `admin`
+
+### Normal User Account
+
+- Name: `Romeny Leito`
+- Email: `romeny.leito@hotmail.com`
+- Password: `08060636202`
+- Role: `user`
+
+## Database Export Note
+
+- The SQL database export should be included in the project root before final submission.
+- Add the exported `.sql` file alongside this `README.md` when the export is ready.
+
 ## Project Structure
 
 ```text
