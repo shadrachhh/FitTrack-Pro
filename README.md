@@ -419,6 +419,8 @@ UPDATE users SET role = 'admin' WHERE email = 'admin@example.com';
 
 ### 3. Log in as admin
 
+Check that you can:
+
 - create exercises
 - edit exercises
 - delete exercises
@@ -451,7 +453,83 @@ Open:
 
 `http://localhost:8000/workouts`
 
- workouts are shown clearly and grouped correctly.
+Confirm that workouts are shown clearly and grouped correctly.
+
+### 7. Test workout filters
+
+Filter by:
+
+- date
+- exercise
+
+### 8. Test dashboard
+
+Open:
+
+`http://localhost:8000/dashboard`
+
+Confirm that it shows:
+
+- total workouts
+- recent workouts
+- quick actions
+
+### 9. Test the SPA
+
+Open:
+
+`http://localhost:8000/spa`
+
+Check that:
+
+- login works through the API
+- dashboard loads
+- exercises load
+- workouts load
+- workout creation works after login
+- router navigation works
+
+## Recommended Demo Flow
+
+If you need to demonstrate the project during review or submission, this is a good order:
+
+1. Show the login and register pages
+2. Log in as a normal user and show the dashboard
+3. Show workout creation and workout history
+4. Show filtering by date and exercise
+5. Log in as an admin and show exercise management
+6. Open the Vue SPA and demonstrate login, routing, and API-backed views
+7. Briefly explain the MVC flow and the API flow
+
+## Submission Checklist
+
+Before submitting, make sure the following are true:
+
+- Docker containers start correctly with `docker compose up --build`
+- the `users` table contains a `role` column
+- at least one admin user exists for demonstrating exercise management
+- the PHP MVC interface works at `http://localhost:8000`
+- the Vue SPA works at `http://localhost:8000/spa`
+- login, register, logout, workouts, and exercise management all function
+- API routes respond with JSON
+- the SQL export file is included in the project root beside `README.md`
+- the README is included in the project root
+- you can explain the code structure in your own words
+
+## Screenshots
+
+You can add screenshots here before final submission.
+
+Suggested screenshots:
+
+- Login page
+- Register page
+- Dashboard
+- Exercise list
+- Exercise edit page
+- Workout create page
+- Workout history page
+- Vue SPA dashboard
 
 
 ## Author
