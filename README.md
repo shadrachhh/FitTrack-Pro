@@ -412,7 +412,7 @@ Open:
 
 `http://localhost:8000/workouts`
 
-Confirm that workouts are shown clearly and grouped correctly.
+ workouts are shown clearly and grouped correctly.
 
 ### 7. Test workout filters
 
@@ -427,7 +427,7 @@ Open:
 
 `http://localhost:8000/dashboard`
 
-Confirm that it shows:
+ it shows:
 
 - total workouts
 - recent workouts
@@ -439,8 +439,6 @@ Open:
 
 `http://localhost:8000/spa`
 
-Check that:
-
 - login works through the API
 - dashboard loads
 - exercises load
@@ -448,8 +446,6 @@ Check that:
 - router navigation works
 
 ## Recommended Demo Flow
-
-If you need to demonstrate the project during review or submission, this is a good order:
 
 1. Show the login and register pages
 2. Log in as a normal user and show the dashboard
@@ -459,38 +455,9 @@ If you need to demonstrate the project during review or submission, this is a go
 6. Open the Vue SPA and demonstrate login, routing, and API-backed views
 7. Briefly explain the MVC flow and the API flow
 
-## Submission Checklist
-
-Before submitting, make sure the following are true:
-
-- Docker containers start correctly with `docker compose up --build`
-- the `users` table contains a `role` column
-- at least one admin user exists for demonstrating exercise management
-- the PHP MVC interface works at `http://localhost:8000`
-- the Vue SPA works at `http://localhost:8000/spa`
-- login, register, logout, workouts, and exercise management all function
-- API routes respond with JSON
-- the README is included in the project root
-- you can explain the code structure in your own words
-
-## Screenshots
-
-You can add screenshots here before final submission.
-
-Suggested screenshots:
-
-- Login page
-- Register page
-- Dashboard
-- Exercise list
-- Exercise edit page
-- Workout create page
-- Workout history page
-- Vue SPA dashboard
-
 ## Rubric-Relevant Summary
 
-This project now includes the key elements needed for a passing grade across the rubric categories:
+This project now includes the key elements needed for rubric categories:
 
 - CSS framework usage through Bootstrap
 - structured frontend components in Vue
@@ -502,7 +469,7 @@ This project now includes the key elements needed for a passing grade across the
 - role-based authorization in the backend
 - MVC, routing, namespaces, and autoloading in the backend
 
-## Notes for Submission
+## Notes
 
 This project is intentionally simple, readable, and explainable. It does not try to over-engineer the assignment. The main focus is on meeting the course requirements with a clean structure and working functionality.
 
@@ -527,8 +494,9 @@ AI tools were used as support during development for:
 - reviewing MVC separation
 - checking validation and routing consistency
 
-All generated or suggested code was reviewed, adjusted, tested, and understood before being kept in the final project.
+All suggested code was reviewed, adjusted, tested, and understood before being kept in the final project.
 
 ## Author
 
 Terkuma Uker
+Inholland University of applied sciences 
