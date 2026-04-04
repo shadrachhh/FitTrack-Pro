@@ -222,13 +222,6 @@ Use the following accounts to test the application.
 ```text
 Fittrack-pro/
 |-- backend/
-|   |-- public/
-|   |   |-- .htaccess
-|   |   |-- app.php
-|   |   |-- index.php
-|   |   `-- spa/
-|   |       |-- index.html
-|   |       `-- app.js
 |   |-- src/
 |   |   |-- Controllers/
 |   |   |   `-- Api/
@@ -239,6 +232,9 @@ Fittrack-pro/
 |   |   `-- Views/
 |   |-- apache.conf
 |   `-- Dockerfile
+|-- frontend/
+|   |-- app.js
+|   `-- index.html
 |-- docker-compose.yml
 |-- fittrack.sql
 `-- README.md
@@ -265,6 +261,10 @@ Contains PDO-based database queries.
 ### `Views`
 
 Contains Bootstrap-styled PHP templates for the server-rendered interface.
+
+### `frontend`
+
+Contains the Vue SPA source files that are mounted into the Dockerized PHP application at `/spa`.
 
 ### `Framework`
 
@@ -356,7 +356,9 @@ This means:
 
 The Vue SPA is included to support the rubric requirements around frontend components, routing, and state management.
 
-The SPA does not need a separate top-level `frontend/` folder for this assignment because it is served directly from the PHP application under `backend/public/spa`. This keeps the project simple while still demonstrating:
+The SPA source is stored in the top-level `frontend/` folder. In Docker, that folder is mounted into the PHP application and served at `/spa`, while the PHP MVC backend remains inside `backend/`.
+
+This keeps the submission aligned with the requirement to include separate front end and back end folders while still demonstrating:
 
 - Vue components
 - frontend routing
@@ -405,6 +407,7 @@ The following corrections were made while finalizing the project:
 - added backend fallback handling for the `Authorization` header in Apache/PHP
 - completed the SPA workout creation flow
 - completed SPA login, register, dashboard, exercises, and workout history flow
+- separated the Vue SPA into a dedicated top-level `frontend/` folder
 - updated the README to reflect the final project structure and final feature set
 
 ## Manual Testing Guide
