@@ -445,16 +445,6 @@ Open:
 - workouts load
 - router navigation works
 
-## Recommended Demo Flow
-
-1. Show the login and register pages
-2. Log in as a normal user and show the dashboard
-3. Show workout creation and workout history
-4. Show filtering by date and exercise
-5. Log in as an admin and show exercise management
-6. Open the Vue SPA and demonstrate login, routing, and API-backed views
-7. Briefly explain the MVC flow and the API flow
-
 ## Rubric-Relevant Summary
 
 This project includes the key elements needed for rubric categories:
@@ -468,33 +458,6 @@ This project includes the key elements needed for rubric categories:
 - JWT authentication for the API
 - role-based authorization in the backend
 - MVC, routing, namespaces, and autoloading in the backend
-
-## Notes
-
-This project is intentionally simple, readable, and explainable. It does not try to over-engineer the assignment. The main focus is on meeting the course requirements with a clean structure and working functionality.
-
-Strong points of the submission:
-
-- clear use case
-- clean MVC backend
-- repository and service separation
-- role-based access control
-- Vue frontend with multiple views
-- JSON API with JWT
-- Docker-based setup
-- Bootstrap styling
-
-## AI Disclosure
-
-AI tools were used as support during development for:
-
-- generating boilerplate structure
-- improving code organization
-- refining documentation
-- reviewing MVC separation
-- checking validation and routing consistency
-
-All suggested code was reviewed, adjusted, tested, and understood before being kept in the final project.
 
 ## Author
 
