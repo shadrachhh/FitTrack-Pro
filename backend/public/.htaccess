@@ -1,0 +1,9 @@
+DirectoryIndex app.php index.html
+
+RewriteEngine On
+
+RewriteRule ^spa/?$ spa/index.html [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ app.php [QSA,L]
