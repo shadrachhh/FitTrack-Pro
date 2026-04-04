@@ -457,7 +457,7 @@ Open:
 
 ## Rubric-Relevant Summary
 
-This project now includes the key elements needed for rubric categories:
+This project includes the key elements needed for rubric categories:
 
 - CSS framework usage through Bootstrap
 - structured frontend components in Vue
