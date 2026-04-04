@@ -399,17 +399,6 @@ UI improvements included:
 - improved SPA workout summaries and filters
 - stronger SPA presentation for demo and grading
 
-## Recent Corrections
-
-The following corrections were made while finalizing the project:
-
-- fixed SPA authentication so API requests can use JWT tokens properly
-- added backend fallback handling for the `Authorization` header in Apache/PHP
-- completed the SPA workout creation flow
-- completed SPA login, register, dashboard, exercises, and workout history flow
-- separated the Vue SPA into a dedicated top-level `frontend/` folder
-- updated the README to reflect the final project structure and final feature set
-
 ## Manual Testing Guide
 
 ### 1. Register a normal user
@@ -464,19 +453,6 @@ Open:
 
  workouts are shown clearly and grouped correctly.
 
-## Rubric-Relevant Summary
-
-This project includes the key elements needed for rubric categories:
-
-- CSS framework usage through Bootstrap
-- structured frontend components in Vue
-- frontend routing with Vue Router
-- frontend state management with a reactive store
-- working backend routes and API endpoints
-- GET, POST, PUT, and DELETE API support
-- JWT authentication for the API
-- role-based authorization in the backend
-- MVC, routing, namespaces, and autoloading in the backend
 
 ## Author
 
