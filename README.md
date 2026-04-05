@@ -1,12 +1,5 @@
 # FitTrack Pro
 
-FitTrack Pro now has two connected parts:
-
-- a PHP backend in `backend/` that provides both MVC pages and JSON API endpoints
-- a Vue 3 frontend in `frontend/` that consumes the PHP API
-
-The Vue app is connected to the backend through `/api/...` endpoints such as `/api/login`, `/api/exercises`, and `/api/workouts`.
-
 ## Authentic Use Case
 
 FitTrack Pro is designed for gym members who want one place to log workouts, review exercise history, and track recent activity. The main use case is a user who trains several times per week and wants to store workout dates, exercises, sets, reps, and weight in a structured application instead of scattered notes. The admin role supports a trainer or gym staff member who manages the shared exercise library for all users.
@@ -427,20 +420,6 @@ Go to:
 - total workouts
 - recent workouts
 - quick action buttons
-
-## Submission Checklist
-
-Before submission, confirm the following:
-
-- `docker compose up --build` starts the backend successfully
-- `npm run build` inside `frontend/` completes successfully
-- the Vue SPA opens at `http://localhost:8000/spa/`
-- login works and returns a JWT token
-- admin exercise create, edit, and delete actions work
-- workout filtering and pagination work
-- `fittrack.sql` is included in the project root
-- this README is included in the project root
-
 
 ## Author
 
