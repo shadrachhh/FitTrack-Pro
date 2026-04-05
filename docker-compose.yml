@@ -6,7 +6,7 @@ services:
       - "8000:80"
     volumes:
       - ./backend:/var/www/html
-      - ./frontend:/var/www/html/public/spa
+      - ./frontend/dist:/var/www/html/public/spa
       - ./backend/apache.conf:/etc/apache2/sites-available/000-default.conf
     depends_on:
       - db

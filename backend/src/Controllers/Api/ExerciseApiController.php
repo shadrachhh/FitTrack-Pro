@@ -13,10 +13,13 @@ class ExerciseApiController
     {
     }
 
-    public function index(): never
+    public function index(array $filters = []): never
     {
+        $result = $this->exerciseService->getExercises($filters);
+
         ApiResponse::json([
-            'data' => $this->exerciseService->getAllExercises(),
+            'data' => $result['data'],
+            'meta' => $result['meta'],
         ]);
     }
 

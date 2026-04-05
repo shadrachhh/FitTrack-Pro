@@ -1,98 +1,105 @@
 # FitTrack Pro
 
-## Project Title
+FitTrack Pro now has two connected parts:
 
-FitTrack Pro - Workout Tracking Web Application
+- a PHP backend in `backend/` that provides both MVC pages and JSON API endpoints
+- a Vue 3 frontend in `frontend/` that consumes the PHP API
 
-## Description
+The Vue app is connected to the backend through `/api/...` endpoints such as `/api/login`, `/api/exercises`, and `/api/workouts`.
 
-FitTrack Pro is a fitness tracking web application built for the Web Development 2 assignment. The application allows users to register, log in, browse exercises, log workouts, and review training history. It also includes an admin role for managing the shared exercise library.
+## Authentic Use Case
 
-The project combines:
+FitTrack Pro is designed for gym members who want one place to log workouts, review exercise history, and track recent activity. The main use case is a user who trains several times per week and wants to store workout dates, exercises, sets, reps, and weight in a structured application instead of scattered notes. The admin role supports a trainer or gym staff member who manages the shared exercise library for all users.
 
-- a server-rendered PHP MVC application
-- a small Vue single-page application
-- a MySQL database
-- Docker for local development
-- Bootstrap for styling
+This project goes beyond the lecture examples by combining:
 
-The main goal of the application is to help users keep a clear record of their workouts, including which exercises they performed, how many sets and reps they completed, and how much weight they used.
+- a PHP MVC backend
+- a JWT-protected REST API
+- a Vue single-page frontend
+- role-based authorization
+- workout filtering and pagination
 
-## Main Features
+## Project Architecture
 
-### Authentication
+### Backend
 
-- User registration
-- User login
-- User logout
-- Session-based authentication for the PHP MVC interface
-- JWT-based authentication for the API and Vue SPA
+The backend is built with plain PHP using MVC-style structure:
 
-### Dashboard
+- `Controllers`
+- `Services`
+- `Repositories`
+- `Framework`
+- `Views`
 
-- Total workouts overview
-- Recent workouts overview
-- Quick action buttons
-- Role-aware navigation
+It handles:
 
-### Exercise Management
+- authentication
+- workout management
+- exercise management
+- dashboard data
+- API responses for the Vue frontend
 
-- View all exercises
-- Create exercises
-- Edit exercises
-- Delete exercises
-- Admin-only protection for exercise management actions
+### Frontend
 
-### Workout Tracking
+The frontend is built with:
 
-- Create workouts by date
-- Add multiple workout entries to one workout
-- Store sets, reps, and weight per exercise
-- View workouts grouped with related exercise entries
-- Filter workout history by date and exercise
+- Vue 3
+- Vue Router
+- Vite
+- Bootstrap 5
 
-### Frontend and API
+It uses the backend API instead of directly rendering PHP views.
 
-- Vue-based SPA with multiple components
-- Vue Router navigation
-- Shared frontend state using a reactive store
-- REST-style API endpoints with JSON responses
-- Error messages returned when API requests fail
+## AI Disclosure Statement
+
+AI tools were used as a development assistant during this project for:
+
+- brainstorming structure improvements
+- checking integration issues between the PHP API and the Vue frontend
+- improving README documentation
+- reviewing code for bugs and missing rubric requirements
+
+All generated suggestions were manually reviewed, adjusted, and tested before being kept in the project. The final code structure, feature choices, debugging decisions, and explanation of the application remain my own responsibility. I understand the codebase and can explain the routing, service layer, repositories, JWT authentication, and frontend API integration.
+
+## Features
+
+### User Features
+
+- Register and log in through the API
+- Token-based frontend authentication
+- View all available exercises
+- Create workouts with multiple exercise entries
+- View workout history with filters and pagination
+- See dashboard statistics and recent workouts in Vue
+
+### Admin Features
+
+- Create exercises from the Vue frontend
+- Edit exercises from the Vue frontend
+- Delete exercises when they are not already used in workouts
 
 ## User Roles
 
-The system supports two user roles using the `users.role` column.
+The application supports two roles through the `users.role` column:
 
-### User
+- `user`
+  A normal user can view exercises, create workouts, and view dashboard information.
 
-A normal user can:
-
-- register and log in
-- view exercises
-- create workouts
-- view workout history
-- use the dashboard
-
-### Admin
-
-An admin can do everything a normal user can do, plus:
-
-- create exercises
-- edit exercises
-- delete exercises
+- `admin`
+  An admin can do everything a normal user can do, plus create, edit, and delete exercises.
 
 ## Technologies Used
 
 - PHP 8.2
 - MySQL 8
-- PDO
 - Apache
+- PDO
+- Vue 3
+- Vue Router
+- Vite
+- Bootstrap 5
 - Docker
 - Docker Compose
-- Bootstrap 5
-- Vue 3
-- Vue Router 4
-- JWT
 
 ## Installation Instructions
 
@@ -103,51 +110,73 @@ git clone <your-repository-url>
 cd Fittrack-pro
 ```
 
-### 2. Start Docker containers
+### 2. Start the backend containers
 
 ```bash
 docker compose up --build
 ```
 
-### 3. Open the project
+This starts:
 
-Server-rendered PHP app:
+- the PHP backend on `http://localhost:8000`
+- phpMyAdmin on `http://localhost:8080`
+- MySQL on port `3307`
 
-`http://localhost:8000`
-
-Vue SPA:
-
-`http://localhost:8000/spa/index.html`
-
-phpMyAdmin:
-
-`http://localhost:8080`
-
-### 4. Stop the containers
+### 3. Install the Vue frontend
 
 ```bash
-docker compose down
+cd frontend
+npm install
 ```
+
+### 4. Run the Vue frontend in development
+
+```bash
+npm run dev
+```
+
+By default Vite runs on:
+
+`http://localhost:5173/spa/`
+
+The dev server proxies `/api` requests to the PHP backend at `http://localhost:8000`.
+
+### 5. Build the Vue frontend for Docker/Apache
+
+```bash
+cd frontend
+npm run build
+```
+
+The built files are written to `frontend/dist` and served by Apache at:
+
+`http://localhost:8000/spa/`
+
+### 6. Log in or register
+
+Create a new account from the Vue frontend or from the PHP pages, then log in with the same backend user data.
 
 ## Database Setup
 
-The application uses MySQL and expects the following tables:
+The project uses MySQL through Docker and expects the following tables:
 
 - `users`
 - `exercises`
 - `workouts`
 - `workout_entries`
 
-### Required Role Column
+### Required user role column
 
-The `users` table must include a `role` column.
+The `users` table should include a `role` column so the application can distinguish admins from normal users.
+
+Example:
 
 ```sql
 ALTER TABLE users
 ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT 'user';
 ```
 
-### Full Table Structure
+### Tables used by the application
 
 ```sql
 CREATE TABLE users (
@@ -183,48 +212,48 @@ CREATE TABLE workout_entries (
 );
 ```
 
-## Default Access Information
+## Default Docker Access
 
-- PHP application: `http://localhost:8000`
-- Vue SPA: `http://localhost:8000/spa/index.html`
-- phpMyAdmin: `http://localhost:8080`
+- PHP app URL: `http://localhost:8000`
+- Vue SPA URL: `http://localhost:8000/spa/`
+- phpMyAdmin URL: `http://localhost:8080`
 - MySQL port: `3307`
-- Database name: `fittrack`
-- Database host inside Docker: `db`
-- MySQL username: `root`
-- MySQL password: `root`
 
-## Demo Login Accounts
+## Frontend API Configuration
 
-Use the following accounts to test the application.
+The Vue frontend reads the backend API base URL from `VITE_API_BASE_URL`.
 
-### Admin Account
+Example local override in `frontend/.env`:
 
-- Name: `Terkuma Uker`
-- Email: `terkumauker50@gmail.com`
-- Password: `08060636202`
-- Role: `admin`
+```env
+VITE_API_BASE_URL=http://localhost:8000
+```
 
-### Normal User Account
+If `VITE_API_BASE_URL` is left empty, the frontend uses relative `/api/...` paths. This works for:
 
-- Name: `Romeny Leito`
-- Email: `romeny.leito@hotmail.com`
-- Password: `08060636202`
-- Role: `user`
+- Apache/Docker deployment at `http://localhost:8000/spa/`
+- local Vite development because `vite.config.js` proxies `/api` to `http://localhost:8000`
 
-## Database Export Note
+## REST API Notes
 
-- The SQL database export should be included in the project root before final submission.
-- The exported database file is included in the project root as `fittrack.sql`.
+The backend API follows REST-style naming and supports JSON error responses.
+
+- `GET` endpoints support filtering and pagination
+- `POST` endpoints return the created object
+- protected endpoints require `Authorization: Bearer <token>`
+- admin-only actions are enforced in the backend, not only in the frontend
 
 ## Project Structure
 
 ```text
 Fittrack-pro/
 |-- backend/
+|   |-- public/
+|   |   |-- .htaccess
+|   |   |-- app.php
+|   |   `-- index.php
 |   |-- src/
 |   |   |-- Controllers/
-|   |   |   `-- Api/
 |   |   |-- Framework/
 |   |   |-- Models/
 |   |   |-- Repositories/
@@ -233,185 +262,114 @@ Fittrack-pro/
 |   |-- apache.conf
 |   `-- Dockerfile
 |-- frontend/
-|   |-- app.js
-|   `-- index.html
+|   |-- src/
+|   |-- public/
+|   |-- package.json
+|   `-- vite.config.js
 |-- docker-compose.yml
-|-- fittrack.sql
 `-- README.md
 ```
 
-## Folder Explanation
+### Folder Explanation
 
-### `Controllers`
+- `Controllers`
+  Handles requests, calls services, and returns views or redirects.
 
-Handles incoming requests and decides which service or view should be used.
+- `Services`
+  Contains validation and business logic.
 
-### `Controllers/Api`
+- `Repositories`
+  Contains SQL queries and database operations using PDO.
 
-Contains API controllers for JSON-based endpoints.
+- `Views`
+  Contains Bootstrap-based user interface files.
 
-### `Services`
+- `Framework`
+  Contains shared core utilities such as `Database`, `Session`, `View`, and the base `Repository`.
 
-Contains application logic and validation rules.
-
-### `Repositories`
-
-Contains PDO-based database queries.
-
-### `Views`
-
-Contains Bootstrap-styled PHP templates for the server-rendered interface.
-
-### `frontend`
-
-Contains the Vue SPA source files that are mounted into the Dockerized PHP application at `/spa`.
-
-### `Framework`
-
-Contains shared infrastructure such as:
-
-- `Database`
-- `Session`
-- `View`
-- `Repository`
-- `ApiResponse`
-- `JwtHelper`
-
-### `Models`
-
-Contains application models such as `User`.
-
-## Backend Architecture
-
-The backend follows MVC and a service layer pattern.
-
-Request flow:
-
-`Controller -> Service -> Repository -> Database`
-
-This means:
-
-- controllers handle request/response logic
-- services contain business rules and validation
-- repositories contain SQL and database access
-- views only display data
-
-## Server-Rendered Routes
-
-### Authentication
-
-- `GET /login`
-- `POST /login`
-- `GET /register`
-- `POST /register`
-- `POST /logout`
-
-### Dashboard
-
-- `GET /dashboard`
-
-### Exercises
-
-- `GET /exercises`
-- `GET /exercises/create`
-- `POST /exercises/create`
-- `GET /exercises/edit?id={id}`
-- `POST /exercises/edit?id={id}`
-- `POST /exercises/delete`
-
-### Workouts
-
-- `GET /workouts`
-- `GET /workouts/create`
-- `POST /workouts/create`
+- `Models`
+  Contains model classes such as `User`.
 
 ## API Endpoints
 
-### Authentication API
+The Vue frontend uses these backend endpoints:
 
 - `POST /api/register`
 - `POST /api/login`
-
-### Exercise API
-
 - `GET /api/exercises`
 - `POST /api/exercises`
 - `PUT /api/exercises/{id}`
 - `DELETE /api/exercises/{id}`
-
-### Workout API
-
 - `GET /api/workouts`
 - `POST /api/workouts`
 
-### API Notes
+Example supported query parameters:
 
-- API responses are JSON
-- authentication uses JWT tokens
-- protected endpoints require `Authorization: Bearer <token>`
-- admin-only exercise changes are checked in the backend
-- workout listing supports filtering by date and exercise
+- `GET /api/exercises?search=press&page=1&per_page=10`
+- `GET /api/workouts?workout_date=2026-04-01&exercise_id=3&page=1&per_page=5`
 
-## Vue SPA
+## Application Modules
 
-The Vue SPA is included to support the rubric requirements around frontend components, routing, and state management.
+### Authentication
 
-The SPA source is stored in the top-level `frontend/` folder. In Docker, that folder is mounted into the PHP application and served at `/spa`, while the PHP MVC backend remains inside `backend/`.
+- User registration
+- User login
+- Password hashing
+- JWT token generation for API access
+- role-based authorization in protected backend routes
 
-This keeps the submission aligned with the requirement to include separate front end and back end folders while still demonstrating:
+### Dashboard
 
-- Vue components
-- frontend routing
-- shared frontend state
-- API integration with JWT authentication
+- Total workout count
+- Recent workouts
+- Quick action buttons
 
-### Included SPA Views
+### Exercise Management
 
-- Login view
-- Dashboard view
-- Exercises view
-- Workouts view
-- Workout create view
+- View all exercises
+- Admin-only create form
+- Admin-only edit form
+- Admin-only delete action
 
-### Frontend Features
+### Workouts
 
-- Vue Router for navigation
-- shared reactive store for token, user, exercises, and workouts
-- API integration with JWT
-- SPA workout creation connected to the backend API
-- protected SPA routes with login redirects
-- SPA dashboard metrics for workouts, entries, and volume
-- exercise search inside the SPA
-- Bootstrap styling
+- Create a workout by date
+- Add multiple entries to a workout
+- Store sets, reps, and weight
+- View workouts grouped with all related exercise rows
 
-## Styling and UI
+## MVC Flow
 
-The application uses Bootstrap 5 for styling.
+The project follows this flow:
 
-UI improvements included:
+`Controller -> Service -> Repository -> Database`
 
-- consistent navbar
-- cards for dashboard and content sections
-- responsive layout
-- clearer spacing and alignment
-- role-aware labels such as `Manage Exercises`
-- improved SPA login and register screens
-- improved SPA workout summaries and filters
-- stronger SPA presentation for demo and grading
+Example:
+
+1. A request goes to a controller.
+2. The controller sends data to a service.
+3. The service validates and applies business rules.
+4. The repository runs SQL through PDO.
+5. The controller returns a view or redirects.
+
 
 ## Manual Testing Guide
 
 ### 1. Register a normal user
 
-Open:
+Vue frontend:
+
+`http://localhost:8000/spa/`
+
+or PHP page:
 
 `http://localhost:8000/register`
 
-Create a standard user account.
+Create a standard account.
 
-### 2. Make a user admin
+### 2. Create an admin account
 
-Open phpMyAdmin and run:
+Update the `role` field for a user in phpMyAdmin:
 
 ```sql
 UPDATE users SET role = 'admin' WHERE email = 'admin@example.com';
@@ -419,11 +377,11 @@ UPDATE users SET role = 'admin' WHERE email = 'admin@example.com';
 
 ### 3. Log in as admin
 
-Check that you can:
+Check that the exercise section allows:
 
-- create exercises
-- edit exercises
-- delete exercises
+- create
+- edit
+- delete
 
 ### 4. Add exercises
 
@@ -432,107 +390,60 @@ Examples:
 - Bench Press
 - Squat
 - Deadlift
-- Shoulder Press
+- Pull Up
 
-### 5. Create workouts
+### 5. Log a workout
 
-Open:
+Go to:
 
-`http://localhost:8000/workouts/create`
+`http://localhost:8000/spa/#/workouts/create`
 
-Add a date and workout entries with:
+Select exercises and enter:
 
-- exercise
 - sets
 - reps
 - weight
 
 ### 6. View workout history
 
-Open:
+Go to:
 
-`http://localhost:8000/workouts`
-
-Confirm that workouts are shown clearly and grouped correctly.
-
-### 7. Test workout filters
-
-Filter by:
-
-- date
-- exercise
-
-### 8. Test dashboard
-
-Open:
-
-`http://localhost:8000/dashboard`
-
-Confirm that it shows:
-
-- total workouts
-- recent workouts
-- quick actions
-
-### 9. Test the SPA
-
-Open:
-
-`http://localhost:8000/spa`
+`http://localhost:8000/spa/#/workouts`
 
 Check that:
 
-- login works through the API
-- dashboard loads
-- exercises load
-- workouts load
-- workout creation works after login
-- router navigation works
+- workouts are listed clearly
+- date and exercise filters work
+- pagination buttons load the next page correctly
 
-## Recommended Demo Flow
+### 7. Check the dashboard
 
-If you need to demonstrate the project during review or submission, this is a good order:
+Go to:
 
-1. Show the login and register pages
-2. Log in as a normal user and show the dashboard
-3. Show workout creation and workout history
-4. Show filtering by date and exercise
-5. Log in as an admin and show exercise management
-6. Open the Vue SPA and demonstrate login, routing, and API-backed views
-7. Briefly explain the MVC flow and the API flow
+`http://localhost:8000/spa/#/dashboard`
+
+ it shows:
+
+- total workouts
+- recent workouts
+- quick action buttons
 
 ## Submission Checklist
 
-Before submitting, make sure the following are true:
+Before submission, confirm the following:
 
-- Docker containers start correctly with `docker compose up --build`
-- the `users` table contains a `role` column
-- at least one admin user exists for demonstrating exercise management
-- the PHP MVC interface works at `http://localhost:8000`
-- the Vue SPA works at `http://localhost:8000/spa`
-- login, register, logout, workouts, and exercise management all function
-- API routes respond with JSON
-- the SQL export file is included in the project root beside `README.md`
-- the README is included in the project root
-- you can explain the code structure in your own words
-
-## Screenshots
-
-You can add screenshots here before final submission.
-
-Suggested screenshots:
-
-- Login page
-- Register page
-- Dashboard
-- Exercise list
-- Exercise edit page
-- Workout create page
-- Workout history page
-- Vue SPA dashboard
+- `docker compose up --build` starts the backend successfully
+- `npm run build` inside `frontend/` completes successfully
+- the Vue SPA opens at `http://localhost:8000/spa/`
+- login works and returns a JWT token
+- admin exercise create, edit, and delete actions work
+- workout filtering and pagination work
+- `fittrack.sql` is included in the project root
+- this README is included in the project root
 
 
 ## Author
 
-Terkuma Uker
+Name: Terkuma Uker
+student number: 714168
 Inholland University of applied sciences 

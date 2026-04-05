@@ -128,7 +128,11 @@ try {
 
         if ($path === '/api/exercises' && $method === 'GET') {
             $getApiUser();
-            $exerciseApiController->index();
+            $exerciseApiController->index([
+                'search' => $_GET['search'] ?? '',
+                'page' => $_GET['page'] ?? 1,
+                'per_page' => $_GET['per_page'] ?? 10,
+            ]);
         }
 
         if ($path === '/api/exercises' && $method === 'POST') {
@@ -154,6 +158,8 @@ try {
             $workoutApiController->index((int) ($apiUser['sub'] ?? 0), [
                 'workout_date' => $_GET['workout_date'] ?? '',
                 'exercise_id' => $_GET['exercise_id'] ?? '',
+                'page' => $_GET['page'] ?? 1,
+                'per_page' => $_GET['per_page'] ?? 5,
             ]);
         }
 

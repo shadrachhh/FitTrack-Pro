@@ -11,9 +11,24 @@ class ExerciseService
     {
     }
 
-    public function getAllExercises(): array
+    public function getExercises(array $filters = []): array
     {
-        return $this->exerciseRepository->getAllExercises();
+        $search = trim((string) ($filters['search'] ?? ''));
+        $page = max(1, (int) ($filters['page'] ?? 1));
+        $perPage = (int) ($filters['per_page'] ?? 10);
+        $perPage = min(max($perPage, 1), 50);
+        $total = $this->exerciseRepository->countExercises($search !== '' ? $search : null);
+
+        return [
+            'data' => $this->exerciseRepository->getExercises($search !== '' ? $search : null, $page, $perPage),
+            'meta' => [
+                'page' => $page,
+                'per_page' => $perPage,
+                'total' => $total,
+                'total_pages' => max(1, (int) ceil($total / $perPage)),
+                'search' => $search,
+            ],
+        ];
     }
 
     public function createExercise(string $name, string $muscleGroup, string $description): array

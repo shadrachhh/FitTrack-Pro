@@ -26,9 +26,16 @@ class WorkoutRepository extends Repository
         }
     }
 
-    public function getWorkoutsByUserId(int $userId, ?string $workoutDate = null, ?int $exerciseId = null): array
+    public function getWorkoutsByUserId(
+        int $userId,
+        ?string $workoutDate = null,
+        ?int $exerciseId = null,
+        int $page = 1,
+        int $perPage = 10
+    ): array
     {
         try {
+            $offset = max(0, ($page - 1) * $perPage);
             $sql = 'SELECT DISTINCT w.id, w.user_id, w.workout_date, w.created_at
                     FROM workouts w';
             $parameters = ['user_id' => $userId];
@@ -49,14 +56,53 @@ class WorkoutRepository extends Repository
                 $parameters['exercise_id'] = $exerciseId;
             }
 
-            $sql .= ' ORDER BY w.workout_date DESC, w.id DESC';
+            $sql .= ' ORDER BY w.workout_date DESC, w.id DESC LIMIT :limit OFFSET :offset';
 
             $statement = $this->connection->prepare($sql);
-            $statement->execute($parameters);
+
+            foreach ($parameters as $key => $value) {
+                $statement->bindValue(':' . $key, $value);
+            }
+
+            $statement->bindValue(':limit', $perPage, \PDO::PARAM_INT);
+            $statement->bindValue(':offset', $offset, \PDO::PARAM_INT);
+            $statement->execute();
 
             return $statement->fetchAll();
         } catch (PDOException $e) {
             throw new RuntimeException('Unable to retrieve workouts.', 0, $e);
+        }
+    }
+
+    public function countByUserIdWithFilters(int $userId, ?string $workoutDate = null, ?int $exerciseId = null): int
+    {
+        try {
+            $sql = 'SELECT COUNT(DISTINCT w.id)
+                    FROM workouts w';
+            $parameters = ['user_id' => $userId];
+
+            if ($exerciseId !== null) {
+                $sql .= ' INNER JOIN workout_entries we ON we.workout_id = w.id';
+            }
+
+            $sql .= ' WHERE w.user_id = :user_id';
+
+            if ($workoutDate !== null && $workoutDate !== '') {
+                $sql .= ' AND w.workout_date = :workout_date';
+                $parameters['workout_date'] = $workoutDate;
+            }
+
+            if ($exerciseId !== null) {
+                $sql .= ' AND we.exercise_id = :exercise_id';
+                $parameters['exercise_id'] = $exerciseId;
+            }
+
+            $statement = $this->connection->prepare($sql);
+            $statement->execute($parameters);
+
+            return (int) $statement->fetchColumn();
+        } catch (PDOException $e) {
+            throw new RuntimeException('Unable to count workouts.', 0, $e);
         }
     }
 

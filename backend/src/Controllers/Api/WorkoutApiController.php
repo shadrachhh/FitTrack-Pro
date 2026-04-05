@@ -16,8 +16,11 @@ class WorkoutApiController
     public function index(int $userId, array $filters): never
     {
         try {
+            $result = $this->workoutService->getWorkoutsForUser($userId, $filters);
+
             ApiResponse::json([
-                'data' => $this->workoutService->getWorkoutsForUser($userId, $filters),
+                'data' => $result['data'],
+                'meta' => $result['meta'],
             ]);
         } catch (InvalidArgumentException $e) {
             ApiResponse::json(['message' => $e->getMessage()], 422);

@@ -61,18 +61,39 @@ class WorkoutService
     {
         $workoutDate = trim((string) ($filters['workout_date'] ?? ''));
         $exerciseId = (int) ($filters['exercise_id'] ?? 0);
+        $page = max(1, (int) ($filters['page'] ?? 1));
+        $perPage = (int) ($filters['per_page'] ?? 5);
+        $perPage = min(max($perPage, 1), 50);
 
         if ($exerciseId > 0 && $this->exerciseRepository->findById($exerciseId) === null) {
             throw new InvalidArgumentException('Selected exercise filter is invalid.');
         }
 
-        $workouts = $this->workoutRepository->getWorkoutsByUserId(
+        $total = $this->workoutRepository->countByUserIdWithFilters(
             $userId,
             $workoutDate !== '' ? $workoutDate : null,
             $exerciseId > 0 ? $exerciseId : null
         );
 
-        return $this->attachEntries($workouts);
+        $workouts = $this->workoutRepository->getWorkoutsByUserId(
+            $userId,
+            $workoutDate !== '' ? $workoutDate : null,
+            $exerciseId > 0 ? $exerciseId : null,
+            $page,
+            $perPage
+        );
+
+        return [
+            'data' => $this->attachEntries($workouts),
+            'meta' => [
+                'page' => $page,
+                'per_page' => $perPage,
+                'total' => $total,
+                'total_pages' => max(1, (int) ceil($total / $perPage)),
+                'workout_date' => $workoutDate,
+                'exercise_id' => $exerciseId > 0 ? $exerciseId : '',
+            ],
+        ];
     }
 
     public function getDashboardStats(int $userId): array
