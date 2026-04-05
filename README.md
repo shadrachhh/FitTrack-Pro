@@ -149,6 +149,9 @@ The built files are written to `frontend/dist` and served by Apache at:
 
 Create a new account from the Vue frontend or from the PHP pages, then log in with the same backend user data.
 
+Admin user name : terkumauker50@gmail.com  password: 08060636202
+Regular User : romeny.leito@hotmail.com  password: 08060636202
+
 ## Database Setup
 
 The project uses MySQL through Docker and expects the following tables:
